@@ -1,0 +1,81 @@
+:root {
+    --primary-color: rgb(255, 230, 0);
+    --secondary-color: black;
+    --accent-color: #626665;
+    --text-color: #D3D3D3;
+    --background-color: #f5f5f5;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    background: url(../utils/yellow-black-grunge-background-1.jpg);
+}
+
+.container {
+    width: 2000px;
+    height: 1250px;
+    margin-top: 30px;
+    border-radius: 10px;
+    background-color: var(--primary-color);
+    box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
+    -webkit-box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
+    -moz-box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
+}
+
+/* hearder  content */
+.headers {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid var(--secondary-color);
+    
+}
+.fa-bars{
+    font-size: 2rem;
+    margin-left:10px;
+    transition: transform 0.5s ease;
+}
+
+
+.fa-solid:hover{
+    padding: 1px;
+    opacity: 0.5;
+    transform: scale(1.2);
+    cursor: pointer;
+}
+
+.entrance{
+    animation: entrance 1s ease 0s 1 normal forwards;
+}
+
+@keyframes entrance {
+	0% {
+		transform: scale(0.5);
+	}
+
+	100% {
+		transform: scale(1.3);
+	}
+}
+
+.fa-fire {
+    margin-left: 100px;
+    display: none;
+}
+
+.search {
+    width: max-content;
+    height: 30px;
+    margin-left: 100px;
+}
+.search-input{
+    background-color: var(--primary-color);
+    border: none;
+    border-bottom: 1px solid black;
+    
+}
