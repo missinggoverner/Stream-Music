@@ -1,11 +1,12 @@
 import { displayTrendy } from "./utils.js";
-console.log("conected")
 
 const entrance = document.querySelector('.fa-bars');
 const tredning = document.querySelector('.fa-fire');
-
+const search = document.querySelector('.search')
 entrance.addEventListener('click', ()=>{
     tredning.style.display = 'flex';
+    search.style.display = 'flex';
+    search.classList.add('entrance')
     tredning.classList.add('entrance');
 
 })
