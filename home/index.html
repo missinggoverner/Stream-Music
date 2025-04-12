@@ -11,17 +11,29 @@
 </head>
 
 <body>
+
     <div class="container">
+        <div class="loader">Loading...</div>
         <div class="headers">
             <i class="fa-solid fa-bars"></i>
-            <i class="fa-solid fa-fire entrance" title="trending"></i>
+            <div class="trend">
+
+                <label for="music"><i class="fa-solid fa-fire entrance" title="trending"></i></label>
+                <select id="range">
+                    <option value="Weeks">Weeks</option>
+                    <option value="Months">Months</option>
+                    <option value="Years">Years</option>
+                </select>
+            </div>
             <div class="search"> <input class="search-input" type="text"
                     placeholder="What do you want to listen too?"><i class="fa-solid fa-magnifying-glass"></i> </div>
         </div>
         <div class="body">
-            <div class="title"></div>
+            <div class="title">
+                <h1>Weeks trending</h1>
+            </div>
             <div class="pages">
-                <div class="previous"> <button class="pre-btn"><i class="fa-solid fa-left-long"></i></button></div>
+                <div class="previous"> <button class="pre-btn"><i class="fa-solid fa-left-long"></i> 0</button></div>
                 <div class="next"><button class="next-btn"><i class="fa-solid fa-right-long"></i></button></div>
             </div>
             <div class="content-box">

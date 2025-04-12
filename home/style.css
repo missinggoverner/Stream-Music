@@ -14,16 +14,35 @@ body {
     justify-content: center;
     background: url(../utils/yellow-black-grunge-background-1.jpg);
 }
-
+ 
 .container {
     width: 2000px;
     height: 1250px;
     margin-top: 30px;
     border-radius: 10px;
+    display: flex;
+    flex-direction: column;
     background-color: var(--primary-color);
+    position: relative;
     box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
     -webkit-box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
     -moz-box-shadow: -6px -14px 71px 14px rgba(0, 0, 0, 0.75);
+}
+
+.loader {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    width: 100px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    display: none;
 }
 
 /* hearder  content */
@@ -64,9 +83,36 @@ body {
     }
 }
 
+/* trending */
+
 .fa-fire {
     margin-left: 100px;
+    margin-right: 10px;
+}
+
+.trend {
     display: none;
+}
+
+select {
+    padding-left: 5px;
+    border-radius: 8px;
+    border: 1px solid var(--secondary-color);
+    background-color: var(--primary-color);
+    color: #333;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+
+option {
+    color: black;
+    border: 1px solid var(--secondary-color);
+    background-color: var(--primary-color);
+
+    padding: 10px;
+    font-size: 16px;
 }
 
 .search {
