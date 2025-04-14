@@ -1,4 +1,4 @@
-import { displayTrendy } from "./utils.js";
+import { displayTrendy, currentPage, itemsPerPage } from "./utils.js";
 
 
 const search = document.querySelector('.search')
@@ -6,6 +6,7 @@ const loader = document.querySelector('.loader');
 const title = document.querySelector('.title-container');
 const perviousBtn = document.querySelector('.pre-btn');
 const nextBtn = document.querySelector('.next-btn');
+const contentBox = document.querySelector('.content-box')
 
 // Adding Even Listening to ranges
 const week = document.querySelector('.week');
@@ -23,8 +24,10 @@ ranges.forEach(range => {
             try {
                 let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/trending?time=${period}&app_name=my_music_app`);
                 if (res.ok) {
-                    let data = await res.json();
-                    displayTrendy(data);
+                    let wholeData = await res.json();
+                    localStorage.setItem('wholeData', JSON.stringify(wholeData))
+
+                    displayTrendy();
                 }
                 if (!res.ok) {
                     console.log('erroe', res)
@@ -37,8 +40,6 @@ ranges.forEach(range => {
                 loader.style.display = 'none';
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 title.innerHTML = `${period}'s 100 tending`;
-                // nextBtn.style.display = 'flex';
-                // perviousBtn.style.display = 'flex';
 
             }
         }
@@ -60,4 +61,23 @@ window.addEventListener('scroll', () => {
     }
 })
 
-export {};
+
+// loading more data while scrolling 
+
+window.addEventListener('scroll', () => {
+    const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
+
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+
+        let allData = JSON.parse(localStorage.getItem('wholeData'))
+        let arrayAllData = Object.values(allData)
+
+        if (currentPage * itemsPerPage < arrayAllData[0].length && currentPage !=0) {
+            displayTrendy();
+        }
+    }
+});
+
+// searching 
+
+export { contentBox }

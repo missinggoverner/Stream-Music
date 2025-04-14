@@ -133,31 +133,6 @@ body {
     margin-left: 30px;
     margin-top: 30px;
 }
-
-/* page turners */
-.pages {
-    width: 50%;
-    height: 50px;
-    display: flex;
-
-    justify-content: space-around;
-    margin: 0px auto;
-}
-
-.turner {
-    padding: 10px 30px;
-    border-radius: 10px;
-    background-color: var(--primary-color);
-    color: black;
-    font-size: 1.5rem;
-    font-weight: bold;    
-    display: none;
-}
-
-.turner:hover{
-    transform: scale(1.1);
-    cursor: pointer;
-}
 /* content container */
 
 
