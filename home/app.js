@@ -35,7 +35,11 @@ ranges.forEach(range => {
             }
             finally {
                 loader.style.display = 'none';
-                title.innerHTML = `${period}'s tending`;
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                title.innerHTML = `${period}'s 100 tending`;
+                // nextBtn.style.display = 'flex';
+                // perviousBtn.style.display = 'flex';
+
             }
         }
         getData();
@@ -48,10 +52,12 @@ ranges.forEach(range => {
 
 let header = document.querySelector('.headers');
 
-window.addEventListener('scroll', ()=>{
-    if(window.scrollY > 0) {
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 0) {
         header.classList.add('scroll');
-    }else{
+    } else {
         header.classList.remove('scroll');
     }
 })
+
+export {};
