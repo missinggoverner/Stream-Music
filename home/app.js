@@ -1,4 +1,4 @@
-import { displayTrendy, currentPage, itemsPerPage } from "./utils.js";
+import { displayTrendy, collection} from "./utils.js";
 
 
 const search = document.querySelector('.search')
@@ -20,6 +20,10 @@ ranges.forEach(range => {
     range.addEventListener('click', () => {
         loader.style.display = 'flex';
         let period = range.innerHTML;
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        contentBox.innerHTML = ' ';
+        localStorage.removeItem('wholeData')
+        collection.currentPage = 0;
         const getData = async () => {
             try {
                 let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/trending?time=${period}&app_name=my_music_app`);
@@ -37,6 +41,7 @@ ranges.forEach(range => {
                 console.error('Error', error);
             }
             finally {
+
                 loader.style.display = 'none';
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 title.innerHTML = `${period}'s 100 tending`;
@@ -72,7 +77,7 @@ window.addEventListener('scroll', () => {
         let allData = JSON.parse(localStorage.getItem('wholeData'))
         let arrayAllData = Object.values(allData)
 
-        if (currentPage * itemsPerPage < arrayAllData[0].length && currentPage !=0) {
+        if (collection.currentPage * collection.itemsPerPage < arrayAllData[0].length && collection.currentPage != 0) {
             displayTrendy();
         }
     }
@@ -80,4 +85,9 @@ window.addEventListener('scroll', () => {
 
 // searching 
 
+document.addEventListener('keydown' ,(e) => {
+    if(e.key === 'Enter'){
+        // something
+    }
+})
 export { contentBox }
