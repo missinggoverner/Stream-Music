@@ -72,7 +72,7 @@ window.addEventListener('scroll', () => {
 window.addEventListener('scroll', () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight - 5) {
+    if (scrollTop + clientHeight >= scrollHeight) {
 
         let allData = JSON.parse(localStorage.getItem('wholeData'))
         let arrayAllData = Object.values(allData)
@@ -82,7 +82,6 @@ window.addEventListener('scroll', () => {
         }
     }
 });
-
 // searching 
 
 document.addEventListener('keydown' ,(e) => {
