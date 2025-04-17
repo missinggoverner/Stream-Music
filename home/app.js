@@ -1,11 +1,7 @@
-import { displayTrendy, collection} from "./utils.js";
+import { displayTrendy, collection, searchResult} from "./utils.js";
 
-
-const search = document.querySelector('.search')
 const loader = document.querySelector('.loader');
 const title = document.querySelector('.title-container');
-const perviousBtn = document.querySelector('.pre-btn');
-const nextBtn = document.querySelector('.next-btn');
 const contentBox = document.querySelector('.content-box')
 
 // Adding Even Listening to ranges
@@ -82,11 +78,23 @@ window.addEventListener('scroll', () => {
         }
     }
 });
-// searching 
 
+
+// searching 
+const search = document.querySelector('.search-input')
+let values = {value: search.value} ;
 document.addEventListener('keydown' ,(e) => {
-    if(e.key === 'Enter'){
-        // something
+    if(e.key === 'Enter' && document.activeElement === search){
+        values = {value: search.value} ;
+        if(values.value != ''){
+            searchResult();
+        }else{
+            search.placeholder = "Input something first";
+            setTimeout(()=> {
+                search.placeholder = "What do you want to listen too?";}, 2000)
+        }
     }
 })
-export { contentBox }
+
+
+export { contentBox, values}

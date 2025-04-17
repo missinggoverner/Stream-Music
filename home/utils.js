@@ -1,4 +1,4 @@
-import { contentBox } from "./app.js";
+import { contentBox, values} from "./app.js";
 
 // diplaying pages 
 
@@ -29,7 +29,7 @@ const displayTrendy = () => {
         contentBox.appendChild(eachContainer);
 
         let image = document.createElement('img');
-        image.src = item.user.cover_photo?.["640x"] || "../utils/yellow-black-grunge-background-1.jpg";
+        image.src = item.user.cover_photo?.["640x"] || "../utils/Capture d’écran 2024-04-09 à 11.33.56.png";
         image.className = 'image-style';
         eachContainer.appendChild(image)
 
@@ -95,5 +95,8 @@ const displayTrendy = () => {
     collection.currentPage++;
 }
 
+const searchResult = () => {
+    console.log(values.value);
+}
 
-export { displayTrendy, collection };
+export { displayTrendy, collection, searchResult};
