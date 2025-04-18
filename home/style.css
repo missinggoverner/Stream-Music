@@ -13,11 +13,13 @@
 }
 
 html {
-    background-color: yellow;
-}
+    background-color: rgba(156, 156, 26, 0.582);
+    
+} 
 
 body {
-    width: 100%;
+    width: 80%;
+    margin: auto;
     height: max-content;
 }
 
@@ -30,6 +32,8 @@ body {
     flex-direction: column;
     background-color: yellow;
     position: relative;
+    border-left: 10px solid white;
+    border-right: 10px solid white;
 }
 
 .loader {
@@ -142,20 +146,29 @@ body {
 
 /* content container */
 
+.placeholder{
+    width: max-content;
+    height: 900px;
+}
+
+.content-box{
+    height: max-content
+}
+
+
 .each-contanier {
     height: max-content;
     width: 1000px;
     background-color: black;
+    margin: 20px auto ;
     position: relative;
-    margin: 30px;
-    margin-left: 70px;
     transition: transform 0.6s ease;
     overflow: hidden;
     border-radius: 5px;
 }
 
 .image-style {
-    width: 500px;
+    width: 50%;
     height: auto;
     display: block;
     margin-right: auto;

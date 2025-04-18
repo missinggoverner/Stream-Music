@@ -1,8 +1,9 @@
-import { displayTrendy, collection, searchResult} from "./utils.js";
+import { displayTrendy, collection, searchResult, whichEven} from "./utils.js";
 
 const loader = document.querySelector('.loader');
 const title = document.querySelector('.title-container');
 const contentBox = document.querySelector('.content-box')
+// const wide = document.querySelector('.placeholder')
 
 // Adding Even Listening to ranges
 const week = document.querySelector('.week');
@@ -17,8 +18,8 @@ ranges.forEach(range => {
         loader.style.display = 'flex';
         let period = range.innerHTML;
         window.scrollTo({ top: 0, behavior: "smooth" });
-        contentBox.innerHTML = ' ';
         localStorage.removeItem('wholeData')
+        contentBox.innerHTML = '';
         collection.currentPage = 0;
         const getData = async () => {
             try {
@@ -63,19 +64,23 @@ window.addEventListener('scroll', () => {
 })
 
 
-// loading more data while scrolling 
+// loading more data while scrolling for trendy songs
 
 window.addEventListener('scroll', () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
     if (scrollTop + clientHeight >= scrollHeight) {
-
-        let allData = JSON.parse(localStorage.getItem('wholeData'))
+        if(whichEven === 1){
+            let allData = JSON.parse(localStorage.getItem('wholeData'))
         let arrayAllData = Object.values(allData)
 
         if (collection.currentPage * collection.itemsPerPage < arrayAllData[0].length && collection.currentPage != 0) {
             displayTrendy();
         }
+        }else if(whichEven === 2){
+            console.log("loade more")
+        }
+        
     }
 });
 
@@ -97,4 +102,4 @@ document.addEventListener('keydown' ,(e) => {
 })
 
 
-export { contentBox, values}
+export { contentBox, values, loader}

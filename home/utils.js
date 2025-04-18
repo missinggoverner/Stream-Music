@@ -1,102 +1,145 @@
-import { contentBox, values} from "./app.js";
+import { contentBox, values, loader} from "./app.js";
 
-// diplaying pages 
+let whichEven = 0; // 1 being for diplaying trendy tracks & 2 being for searched tracks
 
-let currentPage = 0;
-const itemsPerPage = 10;
-let collection = {
-    currentPage: currentPage,
-    itemsPerPage: itemsPerPage
-}
 
+// playing track logic and tracks css 
 
 let currentTrack = null;
 let audio = null;
+let diplay = (item) => {
+
+    let eachContainer = document.createElement('div');
+    eachContainer.className = 'each-contanier';
+    contentBox.appendChild(eachContainer);
+
+    let image = document.createElement('img');
+    image.src = item.user.cover_photo?.["640x"] || "../utils/Capture d’écran 2024-04-09 à 11.33.56.png";
+    image.className = 'image-style';
+    eachContainer.appendChild(image)
+
+    let playBtn = document.createElement('button');
+    playBtn.className = 'play-btn';
+    let icon = document.createElement('i');
+    icon.className = "fa-solid fa-play"
+    playBtn.appendChild(icon);
+    eachContainer.appendChild(playBtn);
+
+
+    eachContainer.addEventListener('mouseover', () => {
+        playBtn.style.visibility = 'visible';
+    })
+
+    eachContainer.addEventListener('mouseleave', () => {
+        playBtn.style.visibility = 'hidden';
+    })
+
+    // playing tracks logic
+    let isPlaying = false;
+    let id = item.id;
+    playBtn.addEventListener('click', () => {
+        const playing = async () => {
+            
+            try {
+                if (currentTrack === null || currentTrack === id) {
+                    if (!audio) {
+                        let streamUrl = `https://discoveryprovider.audius.co/v1/tracks/${id}/stream?&app_name=my_music_app`;
+                        audio = new Audio(streamUrl);
+                        currentTrack = id;
+                    }
+
+                    if (isPlaying === false) {
+                        audio.play();
+                        icon.className = "fa-solid fa-pause";
+                        isPlaying = true;
+                    } else {
+                        audio.pause();
+                        icon.className = "fa-solid fa-play";
+                        isPlaying = false;
+                    }
+                }
+                else {
+                    currentTrack = null;
+                    audio.currentTime = 0;
+                    audio.pause();
+                    audio = null;
+                    document.querySelectorAll('.play-btn i').forEach(i => i.className = "fa-solid fa-play");
+                    isPlaying = false;
+                    playing();
+                }
+
+            } catch (error) {
+                console("connection error")
+            } 
+        }
+        playing();
+    })
+
+}
+
+// diplaying trendy 
+
+let collection = { // used to keep track of pages
+    currentPage: 0,
+    itemsPerPage: 10
+}
 
 const displayTrendy = () => {
-
-    let start = collection.currentPage * itemsPerPage;
-    let end = start + itemsPerPage;
+    if (whichEven != 1) {
+        whichEven = 1;
+        contentBox.innerHTML = '';
+    }
+    let start = collection.currentPage * collection.itemsPerPage;
+    let end = start + collection.itemsPerPage;
     let allData = JSON.parse(localStorage.getItem('wholeData'));
     let dataArray = Object.values(allData);
     let pageData = dataArray[0].slice(start, end);
 
     console.log(pageData)
     pageData.forEach(item => {
-
-        let eachContainer = document.createElement('div');
-        eachContainer.className = 'each-contanier';
-        contentBox.appendChild(eachContainer);
-
-        let image = document.createElement('img');
-        image.src = item.user.cover_photo?.["640x"] || "../utils/Capture d’écran 2024-04-09 à 11.33.56.png";
-        image.className = 'image-style';
-        eachContainer.appendChild(image)
-
-        let playBtn = document.createElement('button');
-        playBtn.className = 'play-btn';
-        let icon = document.createElement('i');
-        icon.className = "fa-solid fa-play"
-        playBtn.appendChild(icon);
-        eachContainer.appendChild(playBtn);
-
-
-        eachContainer.addEventListener('mouseover', () => {
-            playBtn.style.visibility = 'visible';
-        })
-
-        eachContainer.addEventListener('mouseleave', () => {
-            playBtn.style.visibility = 'hidden';
-        })
-        
-        
-        let isPlaying = false;
-        let id = item.id;
-
-        playBtn.addEventListener('click', async () => {
-            const playing = async () => {
-                try {
-                    if (currentTrack === null || currentTrack === id) {
-                        if (!audio) {
-                            let streamUrl = `https://discoveryprovider.audius.co/v1/tracks/${id}/stream?&app_name=my_music_app`;
-                            audio = new Audio(streamUrl);
-                            currentTrack = id;
-                        }
-
-                        if (isPlaying === false) {
-                            audio.play();
-                            icon.className = "fa-solid fa-pause";
-                            isPlaying = true;
-                        } else {
-                            audio.pause();
-                            icon.className = "fa-solid fa-play";
-                            isPlaying = false;
-                        }
-                    }
-                    else {
-                        currentTrack = null;
-                        audio.currentTime = 0;
-                        audio.pause();
-                        audio = null;
-                        document.querySelectorAll('.play-btn i').forEach(i => i.className = "fa-solid fa-play");
-                        isPlaying = false;
-                        playing();
-                    }
-
-                } catch (error) {
-                    console("connection error")
-                }
-            }
-            playing();
-        })
+        diplay(item);
     });
-
 
     collection.currentPage++;
 }
 
-const searchResult = () => {
+
+// diplay search result
+let page = 0;
+let limit = 5;
+let offSet = 5 * page;
+const searchResult = async () => {
+    loader.style.display = 'flex';
     console.log(values.value);
+    try {
+        let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${values.value}&limit=${limit}&offset=${offSet}&app_name=my_music_app`)
+        if (res.ok) {
+            let data = await res.json();
+            if (data.data.length === 0) {
+                console.log("Nothing was found")
+            } else {
+                console.log(data);
+                if (whichEven != 2) {
+                    whichEven = 2;
+                    collection.currentPage = 0;
+                    contentBox.innerHTML = '';
+                }
+                data.data.forEach(item => {
+                    diplay(item);
+                })
+
+            }
+        }
+
+
+        if (!res.ok) {
+            console.log("400: Bad request")
+        }
+    } catch (error) {
+        console.log("Error: Bad Internate connection", error)
+    }finally{
+        loader.style.display = 'none';
+    }
 }
 
-export { displayTrendy, collection, searchResult};
+export { displayTrendy, collection, searchResult,whichEven};
