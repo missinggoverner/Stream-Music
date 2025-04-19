@@ -1,4 +1,4 @@
-import { contentBox, values, loader} from "./app.js";
+import { contentBox, values, loader, title} from "./app.js";
 
 let whichEven = 0; // 1 being for diplaying trendy tracks & 2 being for searched tracks
 
@@ -24,6 +24,40 @@ let diplay = (item) => {
     icon.className = "fa-solid fa-play"
     playBtn.appendChild(icon);
     eachContainer.appendChild(playBtn);
+
+    let factContainer = document.createElement('div');
+    factContainer.classList = 'fact-container';
+    eachContainer.appendChild(factContainer)
+    
+    let title =  document.createElement('div');
+    title.className = 'song-name';
+    title.textContent = item.title;
+    factContainer.appendChild(title)
+
+    let handler = document.createElement('div');
+    handler.className = 'handler';
+    handler.textContent = item.user.handle;
+    factContainer.appendChild(handler)    
+
+    let description = document.createElement('div'); 
+    description.className = 'description';
+    description.textContent = item.description? item.description :"No description";
+    factContainer.appendChild(description)
+
+    
+    let likesCount = document.createElement('div');
+    likesCount.className = 'like-count';
+    factContainer.appendChild(likesCount);
+    
+    let likeIcon = document.createElement('i');
+    likeIcon.className = "fa-solid fa-heart"
+    likesCount.appendChild(likeIcon);
+
+    let likes = document.createElement('div')
+    likes.className = 'likes'
+    likes.innerHTML = item.favorite_count;
+    likesCount.append(likes)
+    
 
 
     eachContainer.addEventListener('mouseover', () => {
@@ -106,10 +140,10 @@ const displayTrendy = () => {
 
 // diplay search result
 let page = 0;
-let limit = 5;
+let limit = 10;
 let offSet = 5 * page;
 const searchResult = async () => {
-    loader.style.display = 'flex';
+    loader.style.visibility = 'visible';
     console.log(values.value);
     try {
         let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${values.value}&limit=${limit}&offset=${offSet}&app_name=my_music_app`)
@@ -138,7 +172,9 @@ const searchResult = async () => {
     } catch (error) {
         console.log("Error: Bad Internate connection", error)
     }finally{
-        loader.style.display = 'none';
+        loader.style.visibility = 'hidden';
+        title.innerHTML = "searched for: " + values.value;
+
     }
 }
 

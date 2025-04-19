@@ -15,7 +15,7 @@ let ranges = [week, month, year];
 ranges.forEach(range => {
 
     range.addEventListener('click', () => {
-        loader.style.display = 'flex';
+        loader.style.visibility = 'visible';
         let period = range.innerHTML;
         window.scrollTo({ top: 0, behavior: "smooth" });
         localStorage.removeItem('wholeData')
@@ -39,7 +39,7 @@ ranges.forEach(range => {
             }
             finally {
 
-                loader.style.display = 'none';
+                loader.style.visibility = 'hidden';
                 window.scrollTo({ top: 0, behavior: "smooth" });
                 title.innerHTML = `${period}'s 100 tending`;
 
@@ -102,4 +102,4 @@ document.addEventListener('keydown' ,(e) => {
 })
 
 
-export { contentBox, values, loader}
+export { contentBox, values, loader, title}

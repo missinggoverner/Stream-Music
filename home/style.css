@@ -14,8 +14,8 @@
 
 html {
     background-color: rgba(156, 156, 26, 0.582);
-    
-} 
+
+}
 
 body {
     width: 80%;
@@ -51,7 +51,7 @@ body {
     top: 500px;
     left: 50%;
     transform: translate(-50%, -50%);
-    display: none;
+    visibility: hidden;
 
 }
 
@@ -146,12 +146,12 @@ body {
 
 /* content container */
 
-.placeholder{
+.placeholder {
     width: max-content;
     height: 900px;
 }
 
-.content-box{
+.content-box {
     height: max-content
 }
 
@@ -160,8 +160,9 @@ body {
     height: max-content;
     width: 1000px;
     background-color: black;
-    margin: 20px auto ;
+    margin: 20px auto;
     position: relative;
+    display: flex;
     transition: transform 0.6s ease;
     overflow: hidden;
     border-radius: 5px;
@@ -170,13 +171,14 @@ body {
 .image-style {
     width: 50%;
     height: auto;
-    display: block;
-    margin-right: auto;
+    margin-left: 0;
     border-right: 4px solid white;
 }
-.image-style:hover{
+
+.image-style:hover {
     opacity: 0.6;
 }
+
 .each-contanier:hover {
     background-color: #626665;
     transform: scale(1.1);
@@ -198,12 +200,60 @@ body {
     visibility: hidden;
     cursor: pointer;
 }
-.fa-play, .fa-pause {
+
+.fa-play,
+.fa-pause {
     margin: auto;
 }
-.play-btn:hover{
+
+.play-btn:hover {
     opacity: 0.7;
-    
+}
+
+.fact-container {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.song-name {
+    color: white;
+    margin-left: 5px;
+}
+
+.handler {
+    color: rgba(255, 255, 255, 0.397);
+    font-size: 0.9rem;
+    margin-left: 5px;
+}
+
+.description {
+    font-size: 1rem;
+    width: 100%;
+    height: max-content;
+    word-wrap: break-word;
+    margin-left: 5px;
+    color: whitesmoke;
+
+}
+
+.like-count {
+    width: max-content;
+    height: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+    gap: 3px;
+}
+.fa-heart {
+    color: red;
+    font-size: 1rem
+}
+.likes {
+    font-size: 0.8rem;
+    color: white;
 }
 /* Different divices */
 
