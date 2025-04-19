@@ -1,4 +1,4 @@
-import { displayTrendy, collection, searchResult, whichEven} from "./utils.js";
+import { displayTrendy, collection, searchResult, whichEven, pages } from "./utils.js";
 
 const loader = document.querySelector('.loader');
 const title = document.querySelector('.title-container');
@@ -63,43 +63,45 @@ window.addEventListener('scroll', () => {
     }
 })
 
+// searching 
+const search = document.querySelector('.search-input')
+let values = { value: null};
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && document.activeElement === search) {
+        values.value = search.value;
+        if (values.value != '') {
+            contentBox.innerHTML = '';
+            pages.page = 0;
+            searchResult();
+        } else {
+            search.placeholder = "Input something first";
+            setTimeout(() => {
+                search.placeholder = "What do you want to listen too?";
+            }, 2000)
+        }
+    }
+})
 
 // loading more data while scrolling for trendy songs
 
 window.addEventListener('scroll', () => {
     const { scrollTop, scrollHeight, clientHeight } = document.documentElement;
 
-    if (scrollTop + clientHeight >= scrollHeight) {
-        if(whichEven === 1){
+    if (scrollTop + clientHeight >= scrollHeight - 5) {
+        if (whichEven === 1) {
             let allData = JSON.parse(localStorage.getItem('wholeData'))
-        let arrayAllData = Object.values(allData)
+            let arrayAllData = Object.values(allData)
 
-        if (collection.currentPage * collection.itemsPerPage < arrayAllData[0].length && collection.currentPage != 0) {
-            displayTrendy();
+            if (collection.currentPage * collection.itemsPerPage < arrayAllData[0].length && collection.currentPage != 0) {
+                displayTrendy();
+            }
+        } else if (whichEven === 2) {
+            values.value = search.value;
+            searchResult();
         }
-        }else if(whichEven === 2){
-            console.log("loade more")
-        }
-        
+
     }
 });
 
 
-// searching 
-const search = document.querySelector('.search-input')
-let values = {value: search.value} ;
-document.addEventListener('keydown' ,(e) => {
-    if(e.key === 'Enter' && document.activeElement === search){
-        values = {value: search.value} ;
-        if(values.value != ''){
-            searchResult();
-        }else{
-            search.placeholder = "Input something first";
-            setTimeout(()=> {
-                search.placeholder = "What do you want to listen too?";}, 2000)
-        }
-    }
-})
-
-
-export { contentBox, values, loader, title}
+export { contentBox, values, loader, title }

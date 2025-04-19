@@ -1,4 +1,4 @@
-import { contentBox, values, loader, title} from "./app.js";
+import { contentBox, values, loader, title } from "./app.js";
 
 let whichEven = 0; // 1 being for diplaying trendy tracks & 2 being for searched tracks
 
@@ -28,8 +28,8 @@ let diplay = (item) => {
     let factContainer = document.createElement('div');
     factContainer.classList = 'fact-container';
     eachContainer.appendChild(factContainer)
-    
-    let title =  document.createElement('div');
+
+    let title = document.createElement('div');
     title.className = 'song-name';
     title.textContent = item.title;
     factContainer.appendChild(title)
@@ -37,18 +37,18 @@ let diplay = (item) => {
     let handler = document.createElement('div');
     handler.className = 'handler';
     handler.textContent = item.user.handle;
-    factContainer.appendChild(handler)    
+    factContainer.appendChild(handler)
 
-    let description = document.createElement('div'); 
+    let description = document.createElement('div');
     description.className = 'description';
-    description.textContent = item.description? item.description :"No description";
+    description.textContent = item.description ? item.description : "No description";
     factContainer.appendChild(description)
 
-    
+
     let likesCount = document.createElement('div');
     likesCount.className = 'like-count';
     factContainer.appendChild(likesCount);
-    
+
     let likeIcon = document.createElement('i');
     likeIcon.className = "fa-solid fa-heart"
     likesCount.appendChild(likeIcon);
@@ -57,7 +57,7 @@ let diplay = (item) => {
     likes.className = 'likes'
     likes.innerHTML = item.favorite_count;
     likesCount.append(likes)
-    
+
 
 
     eachContainer.addEventListener('mouseover', () => {
@@ -73,7 +73,7 @@ let diplay = (item) => {
     let id = item.id;
     playBtn.addEventListener('click', () => {
         const playing = async () => {
-            
+
             try {
                 if (currentTrack === null || currentTrack === id) {
                     if (!audio) {
@@ -104,7 +104,7 @@ let diplay = (item) => {
 
             } catch (error) {
                 console("connection error")
-            } 
+            }
         }
         playing();
     })
@@ -139,14 +139,29 @@ const displayTrendy = () => {
 
 
 // diplay search result
-let page = 0;
-let limit = 10;
-let offSet = 5 * page;
+let pages = { page: 0 }
+let limit = 5;
+let offSet = 5 * pages.page;
+let currentSearch = null;
+let isFetching = false
 const searchResult = async () => {
-    loader.style.visibility = 'visible';
-    console.log(values.value);
+    if(isFetching) {
+        return
+    }
+    isFetching = true;
     try {
-        let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${values.value}&limit=${limit}&offset=${offSet}&app_name=my_music_app`)
+        loader.style.visibility = 'visible';
+        if (currentSearch === null) {
+            currentSearch = values.value;
+        } else if (currentSearch != values.value) {
+            currentSearch = values.value;
+            pages.page = 0;
+            offSet = 5 * pages.page;
+        } else if (currentSearch === values.value) {
+            pages.page++;
+            offSet = pages.page * 5;
+        }
+        let res = await fetch(`https://discoveryprovider.audius.co/v1/tracks/search?query=${currentSearch}&limit=${limit}&offset=${offSet}&app_name=my_music_app`)
         if (res.ok) {
             let data = await res.json();
             if (data.data.length === 0) {
@@ -171,11 +186,12 @@ const searchResult = async () => {
         }
     } catch (error) {
         console.log("Error: Bad Internate connection", error)
-    }finally{
+    } finally {
+        isFetching = false;
         loader.style.visibility = 'hidden';
-        title.innerHTML = "searched for: " + values.value;
+        title.innerHTML = "searched for: " + currentSearch;
 
     }
 }
 
-export { displayTrendy, collection, searchResult,whichEven};
+export { displayTrendy, collection, searchResult, whichEven, pages };
